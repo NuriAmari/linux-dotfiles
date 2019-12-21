@@ -6,58 +6,66 @@ Xft.autohint:  false
 Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
-XTerm*background:        #222D31
-XTerm*foreground:        #d8d8d8
-XTerm*pointerColor:      #1ABB9B
-XTerm*faceName:          Fixed
-XTerm*faceSize:          11
-XTerm*reverseVideo:      on
-XTerm*selectToClipboard: true
+! XTerm*background:        #222D31
+! XTerm*foreground:        #d8d8d8
+! XTerm*pointerColor:      #1ABB9B
+! XTerm*faceName:          Fixed
+! XTerm*faceSize:          11
+! XTerm*reverseVideo:      on
+! XTerm*selectToClipboard: true
 
-*background:                      #222D31
-*foreground:                      #d8d8d8
-*fading:                          8
-*fadeColor:                       black
-*cursorColor:                     #1ABB9B
-*pointerColorBackground:          #2B2C2B
-*pointerColorForeground:          #16A085
+! *background:                      #222D31
+! *foreground:                      #d8d8d8
+! *fading:                          8
+! *fadeColor:                       black
+! *cursorColor:                     #1ABB9B
+! *pointerColorBackground:          #2B2C2B
+! *pointerColorForeground:          #16A085
 
-!! black dark/light
-*color0:                          #222D31
-*color8:                          #585858
+! One Dark Color Scheme
+! special
+*.foreground:   #ABB2BF
+*.background:   #282C34
+*.cursorColor:  #ABB2BF
 
-!! red dark/light
-*color1:                          #ab4642
-*color9:                          #ab4642
+! black
+*.color0:       #282C34
+*.color8:       #3E4452
 
-!! green dark/light
-*color2:                          #7E807E
-*color10:                         #8D8F8D
+! red
+*.color1:       #E06C75
+*.color9:       #BE5046
 
-!! yellow dark/light
-*color3:                          #f7ca88
-*color11:                         #f7ca88
+! green
+*.color2:       #98C379
+*.color10:      #98C379
 
-!! blue dark/light
-*color4:                          #7cafc2
-*color12:                         #7cafc2
+! yellow
+*.color3:       #E5C07B
+*.color11:      #D19A66
 
-!! magenta dark/light
-*color5:                          #ba8baf
-*color13:                         #ba8baf
+! blue
+*.color4:       #61AFEF
+*.color12:      #61AFEF
 
-!! cyan dark/light
-*color6:                          #1ABB9B
-*color14:                         #1ABB9B
+! magenta
+*.color5:       #C678DD
+*.color13:      #C678DD
 
-!! white dark/light
-*color7:                          #d8d8d8
-*color15:                         #f8f8f8
+! cyan
+*.color6:       #56B6C2
+*.color14:      #56B6C2
+
+! white
+*.color7:       #ABB2BF
+*.color15:      #5C6370
+
+URxvt*background: #282C34
 
 Xcursor.theme: xcursor-breeze
 Xcursor.size:                     0
 
-URxvt.font:                       9x15,xft:TerminessTTFNerdFontMono
+URxvt.font:                       xft:Hack:style=Regular:pixelsize=16:antialias=true
 
 ! alternative font settings with 'terminus':
 ! URxvt.font:      -xos4-terminus-medium-r-normal--16-160-72-72-c-80-iso10646-1
@@ -95,7 +103,7 @@ URxvt.keysym.Shift-Control-Down:  \033[1;6B
 ! URxvt.keysym.M-C-c:               perl:clipboard:copy
 ! URxvt.keysym.M-v:                 perl:clipboard:paste
 ! URxvt.keysym.M-C-v:               perl:clipboard:paste_escaped
-! URxvt*termName:                   string
+ URxvt*termName:                   xterm-256color
 ! URxvt*geometry:                   geometry
 ! URxvt*chdir:                      string
 ! URxvt*loginShell:                 boolean

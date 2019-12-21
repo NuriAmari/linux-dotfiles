@@ -177,6 +177,9 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 " ai autocompletion
 Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
+" one dark theme
+Plug 'joshdick/onedark.vim'
+
 call plug#end()
 
 let g:deoplete#enable_at_startup = 1
@@ -205,16 +208,6 @@ let g:fzf_action = {
     \ 'ctrl-v': 'vsplit',
     \ }
 
-if (empty($TMUX))
-  if (has("nvim"))
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  if (has("termguicolors"))
-    set termguicolors
-  endif
-endif
-
-
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ }
@@ -222,3 +215,5 @@ let g:lightline = {
 " set colorscheme
 syntax on
 set background=dark
+let g:onedark_termcolors=16
+colorscheme onedark
