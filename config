@@ -416,3 +416,5 @@ mode "$mode_gaps_outer" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
+
+exec --no-startup-id xset r rate 250 15
