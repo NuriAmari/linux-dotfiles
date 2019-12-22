@@ -1,6 +1,7 @@
 # neovim alias
 alias vim=$(which nvim)
 alias vi=$(which nvim)
+alias python="python3"
 
 # remap caps to escape
 setxkbmap -option caps:escape
