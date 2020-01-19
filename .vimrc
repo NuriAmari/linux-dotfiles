@@ -56,16 +56,14 @@ let g:maplocalleader="\<Space>"
 nnoremap j gj
 nnoremap k gk
 
-" for when not using iterm, probably gonna move towards
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 noremap <C-w> <C-w>q
 noremap <C-n> :NERDTreeToggle<CR>
+noremap <C-f> :NERDTreeFind<CR>
 
-" toggel file tree
-nnoremap <F11> :NERDTreeToggle<CR>
 " Fzf keybindings
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>f :FZF<CR>
@@ -75,33 +73,24 @@ nnoremap <leader>t :Tags<CR>
 " use to quick refresh vim
 noremap <leader>rr :source ~/.vimrc<CR>
 
-nmap <silent> gd <Plug>(coc-definition)
+" coc configuration
+
+" tab and shift tab to iterate suggestions, enter to confirm
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+nmap <leader>gd <Plug>(coc-definition)
+nmap <leader>gr <Plug>(coc-references)
+nmap <leader>rn <Plug>(coc-rename)
+vmap <leader>f <Plug>(coc-format-selected)
+
+command! -nargs=0 Format :call CocAction('format')
 
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-let g:ale_linters = {
-\   'javascript': ['prettier'],
-\   'python': ['flake8', 'pyls'],
-\   'c': ['gcc'],
-\   'cpp': ['gcc'],
-\}
-
-let g:ale_fixers = {
-\   'javascript': ['prettier'],
-\   'python': ['yapf'],
-\   'c': ['clang-format'],
-\   'cpp': ['clang-format'],
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\}
-
-let g:ale_linters_explicit = 1
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_set_balloons = 0
-
+" light line configuration
 function! InsertStatuslineColor(mode)
   if a:mode == 'i'
     hi statusline guibg=magenta
@@ -134,27 +123,14 @@ Plug 'pbogut/fzf-mru.vim'
 "colour schemes
 Plug 'itchyny/lightline.vim'
 
-" async fixing and linting
-Plug 'w0rp/ale'
-
-" autocompletion
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-
 "jsx synatax highlight
 Plug 'mgechev/vim-jsx'
 
 "js sytax highlighting
-Plug 'https://github.com/pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 
 " quickly comment / uncomment blocks
 Plug 'tpope/vim-commentary'
-
-" better grep
-Plug 'mileszs/ack.vim'
-" theme
-Plug 'rakr/vim-one'
 
 " change double quotes to single quotes fast
 Plug 'tpope/vim-surround'
@@ -171,20 +147,10 @@ Plug 'scrooloose/nerdtree'
 " coc for lsp support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" markdown syntax highlighting
-Plug 'vim-pandoc/vim-pandoc-syntax'
-
-" ai autocompletion
-Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
-
 " one dark theme
 Plug 'joshdick/onedark.vim'
 
 call plug#end()
-
-let g:deoplete#enable_at_startup = 1
-
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 command! Tags call fzf#run(fzf#wrap({
       \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
@@ -213,7 +179,6 @@ let g:lightline = {
       \ }
 
 " set colorscheme
-syntax on
 set background=dark
 let g:onedark_termcolors=16
 colorscheme onedark
