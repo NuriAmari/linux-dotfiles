@@ -3,9 +3,6 @@ alias vim=$(which nvim)
 alias vi=$(which nvim)
 alias python="python3"
 
-# remap caps to escape
-setxkbmap -option caps:escape
-
 # node version manager
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -16,3 +13,6 @@ get_git_branch() {
 }
 
 export PS1="\[\033[38;5;245m\]\w\[\033[33m\]\$(get_git_branch) \[\e[0m\]"
+
+export PYTHONHASHSEED=0
+export PYTHONDONTWRITEBYTECODE="true"

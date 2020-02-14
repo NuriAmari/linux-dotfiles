@@ -6,6 +6,9 @@ set shiftwidth=4
 " change to 2 for js
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType scss setlocal shiftwidth=2 tabstop=2
+autocmd FileType cpp setlocal shiftwidth=2 tabstop=2
+autocmd FileType typescript setlocal shiftwidth=2 tabstop=2
+autocmd FileType typescript.tsx setlocal shiftwidth=2 tabstop=2
 " set wrap for markdown
 autocmd FileType md setlocal wrap
 " set tabwidth for c
@@ -90,24 +93,6 @@ command! -nargs=0 Format :call CocAction('format')
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" light line configuration
-function! InsertStatuslineColor(mode)
-  if a:mode == 'i'
-    hi statusline guibg=magenta
-  elseif a:mode == 'r'
-    hi statusline guibg=blue
-  else
-    hi statusline guibg=red
-  endif
-endfunction
-
-au InsertEnter * call InsertStatuslineColor(v:insertmode)
-au InsertChange * call InsertStatuslineColor(v:insertmode)
-au InsertLeave * hi statusline guibg=green
-
-" default the statusline to green when entering Vim
-hi statusline guibg=green
-
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -119,6 +104,7 @@ call plug#begin('~/.vim/plugged')
 " fuzzy file finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'pbogut/fzf-mru.vim'
+Plug 'junegunn/fzf.vim'
 
 "colour schemes
 Plug 'itchyny/lightline.vim'
@@ -147,38 +133,18 @@ Plug 'scrooloose/nerdtree'
 " coc for lsp support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" one dark theme
-Plug 'joshdick/onedark.vim'
+" colorscheme
+Plug 'morhetz/gruvbox'
+
+" lightline colorscheme
+Plug 'shinchu/lightline-gruvbox.vim'
+
+" ale for white space fixing
+Plug 'dense-analysis/ale'
 
 call plug#end()
 
-command! Tags call fzf#run(fzf#wrap({
-      \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
-      \            '| grep --invert-match --text ^!',
-      \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index --expect=ctrl-x,ctrl-v',
-      \ 'down': '40%',
-      \ 'sink*':    function('s:tags_sink'),
-      \ }))
-command! Buffers call fzf#run(fzf#wrap({
-      \ 'source': filter(map(range(1, bufnr('$')), 'bufname(v:val)'), 'len(v:val)'),
-      \ }))
-command! MRU call fzf#run(fzf#wrap({
-      \ 'source': v:oldfiles,
-      \ }))
-
-
-" FZF
-let g:fzf_action = {
-    \ 'ctrl-t': 'tabedit',
-    \ 'ctrl-x': 'split',
-    \ 'ctrl-v': 'vsplit',
-    \ }
-
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ }
-
-" set colorscheme
 set background=dark
-let g:onedark_termcolors=16
-colorscheme onedark
+colorscheme gruvbox
+let g:lightline = {}
+let g:lightline.colorscheme = 'gruvbox'

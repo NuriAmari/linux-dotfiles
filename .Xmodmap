@@ -1,2 +1,11 @@
-xmodmap -e 'clear lock'
-xmodmap -e 'keycode 0x42=Escape'
+! Remaps caps lock to escape
+clear lock
+clear control
+keycode 66 = Escape
+add control = Control_L Control_R
+
+! remap right alt to F4 for tmux prefix
+clear mod1
+keycode 108 = F4
+add mod1 = Alt_L Alt_R Meta_L
+
