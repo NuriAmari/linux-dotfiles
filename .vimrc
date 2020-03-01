@@ -6,7 +6,7 @@ set shiftwidth=4
 " change to 2 for js
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType scss setlocal shiftwidth=2 tabstop=2
-autocmd FileType cpp setlocal shiftwidth=2 tabstop=2
+autocmd FileType cpp setlocal shiftwidth=4 tabstop=4
 autocmd FileType typescript setlocal shiftwidth=2 tabstop=2
 autocmd FileType typescript.tsx setlocal shiftwidth=2 tabstop=2
 " set wrap for markdown
@@ -148,3 +148,23 @@ set background=dark
 colorscheme gruvbox
 let g:lightline = {}
 let g:lightline.colorscheme = 'gruvbox'
+
+" Ale configuration
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'cpp': ['clang-format'],
+\}
+
+let g:ale_linters = {
+\    'cpp': ['gcc'],
+\    'python': ['pylint', 'mypy'],
+\}
+
+let g:ale_fix_on_save = 1
+let g:ale_linters_explicit = 1
+
+" open file at last location
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g'\"" | endif
+endif

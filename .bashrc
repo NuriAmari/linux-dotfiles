@@ -16,3 +16,4 @@ export PS1="\[\033[38;5;245m\]\w\[\033[33m\]\$(get_git_branch) \[\e[0m\]"
 
 export PYTHONHASHSEED=0
 export PYTHONDONTWRITEBYTECODE="true"
+export PATH=$PATH:/usr/bin/clion-2019.3.4/bin

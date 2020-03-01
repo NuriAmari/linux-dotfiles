@@ -1,25 +1,3 @@
 {
-    "tslint.configFile": "/Users/nuri/ata_desktop/squid/cache/panel/master/squid/panel/static/src/tslint.json",
-    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
-    "languageserver": {
-        "ccls": {
-            "command": "ccls",
-            "filetypes": [
-                "c",
-                "cpp",
-                "cuda",
-                "objc",
-                "objcpp"
-            ],
-            "rootPatterns": [
-                ".ccls-root",
-                "compile_commands.json"
-            ],
-            "initializationOptions": {
-                "cache": {
-                    "directory": ".ccls-cache"
-                }
-            }
-        }
-    }
+    "python.linting.enabled": false
 }
