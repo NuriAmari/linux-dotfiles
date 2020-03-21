@@ -7,7 +7,7 @@ then
     echo "Xft.dpi: 120" >> "$temp_file"
     xrandr --output eDP1 --auto
     xrandr --output HDMI1 --off
-    xrandr --size 2256x1504
+    xrandr --size 2560x1440
 elif [ $1 = "m" ]
 then
     echo "Xft.dpi: 96" >> "$temp_file"
