@@ -83,10 +83,19 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-nmap <leader>gd <Plug>(coc-definition)
-nmap <leader>gr <Plug>(coc-references)
-nmap <leader>rn <Plug>(coc-rename)
-vmap <leader>f <Plug>(coc-format-selected)
+nmap <silent> <leader>gd <Plug>(coc-definition)
+nmap <silent> <leader>gr <Plug>(coc-references)
+nmap <silent> <leader>rn <Plug>(coc-rename)
+vmap <silent> <leader>f <Plug>(coc-format-selected)
+nmap <silent> <leader>h <SID>show_hover()<CR>
+
+function! s:show_hover()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 command! -nargs=0 Format :call CocAction('format')
 
@@ -155,20 +164,15 @@ let g:ale_fixers = {
 \   'cpp': ['clang-format'],
 \   'html': ['prettier'],
 \   'scss': ['prettier'],
+\   'python': ['black'],
 \}
 
 let g:ale_linters = {
 \    'cpp': ['gcc'],
-\    'python': ['pylint', 'mypy'],
-\    'html': ['prettier'],
-\    'scss': ['prettier'],
 \}
 
 let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
 
-" open file at last location
-if has("autocmd")
-  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-    \| exe "normal! g'\"" | endif
-endif
+set exrc
+set secure
