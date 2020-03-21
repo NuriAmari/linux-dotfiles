@@ -7,3 +7,4 @@ ln -f .Xresources ~/.Xresources
 ln -f coc-settings.json ~/.config/nvim/coc-settings.json
 ln -f .tmux.conf ~/.tmux.conf
 ln -f pycodestyle ~/.config/pycodestyle
+ln -f display_switch /usr/bin/display_switch
