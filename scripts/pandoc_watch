@@ -1,0 +1,9 @@
+#!/bin/bash
+TARGET=$1
+OUTPUT=$2
+
+while inotifywait --exclude '.git' -qq -r -e close_write,moved_to,move_self $TARGET; do
+    sleep 0.2
+    bash -c "pandoc -V geometry:margin=1in -f markdown -t pdf -o $OUTPUT --mathjax $TARGET" 
+    echo
+done
