@@ -9,6 +9,8 @@ autocmd FileType scss setlocal shiftwidth=2 tabstop=2
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4
 autocmd FileType typescript setlocal shiftwidth=2 tabstop=2
 autocmd FileType typescript.tsx setlocal shiftwidth=2 tabstop=2
+autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+
 " set wrap for markdown
 autocmd FileType md setlocal wrap
 " set tabwidth for c
@@ -48,7 +50,7 @@ endif
 
 autocmd BufNewFile,BufRead * setlocal formatoptions-=r
 
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " set leader to space
 map <Space> <Nop>
@@ -67,6 +69,10 @@ noremap <C-w> <C-w>q
 noremap <C-n> :NERDTreeToggle<CR>
 noremap <C-f> :NERDTreeFind<CR>
 
+" Better omnifunc mappings
+inoremap <expr> <tab> pumvisible() ? "\<C-N>" : "\<tab>"
+inoremap <expr> <S-tab> pumvisible() ? "\<C-P>" : "\<S-tab>"
+
 " Fzf keybindings
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>f :FZF<CR>
@@ -75,29 +81,6 @@ nnoremap <leader>t :Tags<CR>
 
 " use to quick refresh vim
 noremap <leader>rr :source ~/.vimrc<CR>
-
-" coc configuration
-
-" tab and shift tab to iterate suggestions, enter to confirm
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-nmap <silent> <leader>gd <Plug>(coc-definition)
-nmap <silent> <leader>gr <Plug>(coc-references)
-nmap <silent> <leader>rn <Plug>(coc-rename)
-vmap <silent> <leader>f <Plug>(coc-format-selected)
-nmap <silent> <leader>h <SID>show_hover()<CR>
-
-function! s:show_hover()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-command! -nargs=0 Format :call CocAction('format')
 
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -139,9 +122,6 @@ Plug 'tpope/vim-fugitive'
 " file tree viewer
 Plug 'scrooloose/nerdtree'
 
-" coc for lsp support
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 " colorscheme
 Plug 'morhetz/gruvbox'
 
@@ -151,7 +131,26 @@ Plug 'shinchu/lightline-gruvbox.vim'
 " ale for white space fixing
 Plug 'dense-analysis/ale'
 
+" ts / tsx syntax
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+
+"neovim lsp
+Plug 'neovim/nvim-lsp'
+
+"markdown syntax highlighting
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+" auto complete
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+" lsp based autocomplete source for deoplete
+Plug 'Shougo/deoplete-lsp'
+
 call plug#end()
+
+" start deoplete automatically
+let g:deoplete#enable_at_startup = 1
 
 set background=dark
 colorscheme gruvbox
@@ -165,10 +164,14 @@ let g:ale_fixers = {
 \   'html': ['prettier'],
 \   'scss': ['prettier'],
 \   'python': ['black'],
+\   'typescript': ['prettier'],
+\   'typescriptreact': ['prettier'],
 \}
 
 let g:ale_linters = {
 \    'cpp': ['gcc'],
+\   'typescript': ['tsserver'],
+\   'typescriptreact': ['tsserver'],
 \}
 
 let g:ale_fix_on_save = 1
@@ -176,3 +179,41 @@ let g:ale_linters_explicit = 1
 
 set exrc
 set secure
+
+let NERDTreeIgnore=['$*/\.mypy_cache/*', '$*/__pycache__/*']
+let NERDTreeRespectWildIgnore=1
+
+:lua << END
+    require'nvim_lsp'.pyls.setup{
+        settings = {
+            pyls =  {
+                plugins = {
+                    mccabe = {
+                        enabled = false;
+                    };
+                    pylint = {
+                        enabled = true;
+                    };
+                    pyls_mypy = {
+                        enabled = true;
+                    };
+                    pyls_black = {
+                        enabled = false;
+                    };
+                }
+            }
+        }
+    }
+END
+
+" nvim lsp integeration
+nnoremap <silent> <leader>gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <leader>K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> <leader><c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> <leader>gr    <cmd>lua vim.lsp.buf.references()<CR>
+
+" I don't like nvim-lsp inline diagnostics 
+:lua << END
+vim.lsp.callbacks['textDocument/publishDiagnostics'] = function (...)
+end
+END
