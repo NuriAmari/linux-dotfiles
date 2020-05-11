@@ -217,3 +217,9 @@ nnoremap <silent> <leader>gr    <cmd>lua vim.lsp.buf.references()<CR>
 vim.lsp.callbacks['textDocument/publishDiagnostics'] = function (...)
 end
 END
+
+" Open files at the last location
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g'\"" | endif
+endif
