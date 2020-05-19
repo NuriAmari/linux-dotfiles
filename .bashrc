@@ -7,7 +7,11 @@ alias cd_466="cd ~/Workspace/git/notes/cs466"
 alias cd_456="cd ~/Workspace/git/notes/cs456"
 alias cd_449="cd ~/Workspace/git/notes/cs449"
 alias cd_360="cd ~/Workspace/git/notes/cs360"
-alias cd_112="cd ~/Workspace/git/notes/cs112"
+alias cd_112="cd ~/Workspace/git/notes/phys112"
+alias cd_101="cd ~/Workspace/git/notes/econ101"
+alias cd_notes="cd ~/Workspace/git/notes"
+alias login="ssh nfamari@linux.student.cs.uwaterloo.ca"
+
 
 # node version manager
 export NVM_DIR="$HOME/.nvm"
