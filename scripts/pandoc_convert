@@ -1,0 +1,12 @@
+#!/bin/python3
+import os
+
+from sys import argv
+
+target = argv[1]
+
+filepath_without_extension = target[:-3]
+
+output = filepath_without_extension + '.pdf'
+
+os.system(f'pandoc -V geometry:margin=1in -f markdown -t pdf -o {output} --mathjax {target}')
