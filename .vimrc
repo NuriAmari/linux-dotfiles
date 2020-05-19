@@ -212,7 +212,7 @@ nnoremap <silent> <leader>K     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <leader><c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> <leader>gr    <cmd>lua vim.lsp.buf.references()<CR>
 
-" I don't like nvim-lsp inline diagnostics 
+" I don't like nvim-lsp inline diagnostics
 :lua << END
 vim.lsp.callbacks['textDocument/publishDiagnostics'] = function (...)
 end
@@ -223,3 +223,10 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal! g'\"" | endif
 endif
+
+function! ZathuraOpen()
+    execute "!pandoc_convert " . expand('%:p')
+    execute "!zathura " . expand('%:p')[0:-3] . 'pdf &'
+endfunction
+
+command Zathura :call ZathuraOpen()
