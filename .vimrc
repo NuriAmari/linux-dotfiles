@@ -135,17 +135,11 @@ Plug 'dense-analysis/ale'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 
-"neovim lsp
-Plug 'neovim/nvim-lsp'
-
 "markdown syntax highlighting
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
-" auto complete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-" lsp based autocomplete source for deoplete
-Plug 'Shougo/deoplete-lsp'
+" cpp syntax highlighting
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 call plug#end()
 
@@ -183,40 +177,11 @@ set secure
 let NERDTreeIgnore=['$*/\.mypy_cache/*', '$*/__pycache__/*']
 let NERDTreeRespectWildIgnore=1
 
-:lua << END
-    require'nvim_lsp'.pyls.setup{
-        settings = {
-            pyls =  {
-                plugins = {
-                    mccabe = {
-                        enabled = false;
-                    };
-                    pylint = {
-                        enabled = true;
-                    };
-                    pyls_mypy = {
-                        enabled = true;
-                    };
-                    pyls_black = {
-                        enabled = false;
-                    };
-                }
-            }
-        }
-    }
-END
-
 " nvim lsp integeration
 nnoremap <silent> <leader>gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> <leader>K     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <leader><c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> <leader>gr    <cmd>lua vim.lsp.buf.references()<CR>
-
-" I don't like nvim-lsp inline diagnostics
-:lua << END
-vim.lsp.callbacks['textDocument/publishDiagnostics'] = function (...)
-end
-END
 
 " Open files at the last location
 if has("autocmd")
