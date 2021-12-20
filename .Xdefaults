@@ -1,0 +1,3 @@
+URxvt.perl-ext:	  default,matcher
+URxvt.url-launcher: google-chrome-stable
+URxvt.matcher.button: 1

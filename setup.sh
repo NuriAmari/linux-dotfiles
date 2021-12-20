@@ -1,10 +1,12 @@
 #!/bin/bash
-ln -f config ~/.i3/config
-ln -f .vimrc ~/.vimrc
-ln -f init.vim ~/.config/nvim/init.vim
-ln -f .bashrc ~/.bashrc
-ln -f .Xresources ~/.Xresources
-ln -f coc-settings.json ~/.config/nvim/coc-settings.json
-ln -f .tmux.conf ~/.tmux.conf
-ln -f pycodestyle ~/.config/pycodestyle
-ln -f display_switch /usr/bin/display_switch
+# Symlinks configuration files to their correct location. 
+# Careful as it completely replaces any existing configuration.
+
+ln -s -f $(pwd)/config ~/.i3/config
+ln -s -f $(pwd)/.vimrc ~/.i3/.vimrc
+mkdir -p ~/.config/nvim && ln -s -f $(pwd)/init.vim ~/.config/nvim/init.vim
+ln -s -f $(pwd)/.bashrc ~/.bashrc
+ln -s -f $(pwd)/.tmux.conf ~/.tmux.conf
+ln -s -f $(pwd)/.Xresources ~/.Xresources
+ln -s -f $(pwd)/.Xmodmap ~/.Xmodmap
+ln -s -f $(pwd)/.Xdefaults ~/.Xdefaults

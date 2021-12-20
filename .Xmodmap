@@ -5,7 +5,6 @@ keycode 66 = Escape
 add control = Control_L Control_R
 
 ! remap right alt to F4 for tmux prefix
-clear mod1
-keycode 108 = F4
-add mod1 = Alt_L Alt_R Meta_L
-
+clear mod4
+keycode 134 = F4
+add mod4 = Super_L
