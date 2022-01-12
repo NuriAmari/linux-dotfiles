@@ -2,6 +2,7 @@
 # Symlinks configuration files to their correct location. 
 # Careful as it completely replaces any existing configuration.
 
+ln -s -f $(pwd)/.gdbinit ~/.gdbinit
 ln -s -f $(pwd)/config ~/.i3/config
 ln -s -f $(pwd)/.vimrc ~/.i3/.vimrc
 mkdir -p ~/.config/nvim && ln -s -f $(pwd)/init.vim ~/.config/nvim/init.vim
