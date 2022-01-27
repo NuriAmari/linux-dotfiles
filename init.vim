@@ -1,10 +1,11 @@
+set shiftround
 set shell=/bin/bash
 " show existing tab with 4 spaces width
 set tabstop=4
 " when indenting with '>', use 4 spaces width
 set shiftwidth=4
 " change to 2 for js
-autocmd FileType cpp setlocal shiftwidth=4 tabstop=4
+autocmd FileType cpp setlocal shiftwidth=2 tabstop=2
 " set wrap for markdown
 autocmd FileType md setlocal wrap
 " replace tabs with spaces
@@ -75,7 +76,8 @@ nnoremap <leader>n :Marks<CR>
 nnoremap <leader>s :Rg<CR>
 
 " use to quick refresh vim
-noremap <leader>rr :source ~/.config/nvim/init.vim<CR>
+noremap <leader>rr :source $MYVIMRC<CR>
+noremap <leader>ev :vsplit $MYVIMRC<CR>
 
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -90,12 +92,12 @@ call plug#begin('~/.vim/plugged')
 "lsp
 Plug 'neovim/nvim-lspconfig'
 
-"fuzzy search
+" fuzzy search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-"lsp
-Plug 'neovim/nvim-lspconfig'
+" treesitter integration
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "colour schemes
 Plug 'itchyny/lightline.vim'
@@ -118,12 +120,36 @@ Plug 'shinchu/lightline-gruvbox.vim'
 " ale for white space fixing
 Plug 'dense-analysis/ale'
 
+" context
+Plug 'liuchengxu/vista.vim'
+
+" breadcrumbs
+Plug 'SmiteshP/nvim-gps'
+
+" autocomplete
+Plug 'hrsh7th/nvim-compe'
+
 call plug#end()
 
 set background=dark
 colorscheme gruvbox
-let g:lightline = {}
-let g:lightline.colorscheme = 'gruvbox'
+
+function! NvimGps() abort
+	return luaeval("require'nvim-gps'.is_available()") ?
+		\ luaeval("require'nvim-gps'.get_location()") : ''
+endfunction
+let g:lightline = {
+      \ 'colorscheme': 'gruvbox',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified', 'gps' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gps': 'NvimGps'
+      \ },
+      \ }
+
+nnoremap <silent> <leader>/ <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
 " Ale configuration
 let g:ale_fixers = {
@@ -152,12 +178,46 @@ nnoremap <silent> <leader>gt <cmd> lua vim.lsp.buf.typeDefinition()<CR>
 nnoremap <silent> <leader>gi <cmd> lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <leader>gh <cmd> lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <leader>h :ClangdSwitchSourceHeader<CR>
+nnoremap <silent> <leader>rn <cmd> lua vim.lsp.buf.rename()<CR>
 
-" lsp configuration
 lua << EOF
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  resolve_timeout = 800;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = {
+    border = { '', '' ,'', ' ', '', '', '', ' ' }, -- the border option is the same as `|help nvim_open_win|`
+    winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
+    max_width = 120,
+    min_width = 60,
+    max_height = math.floor(vim.o.lines * 0.3),
+    min_height = 1,
+  };
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    vsnip = true;
+    ultisnips = true;
+    luasnip = true;
+  };
+}
 require'lspconfig'.clangd.setup{
     root_dir = require'lspconfig'.util.root_pattern("compile_commands.json") or dirname
 }
+require'nvim-gps'.setup()
 EOF
 
 " Open files at the last location
