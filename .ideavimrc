@@ -1,0 +1,35 @@
+" Plugins
+set surround
+set NERDTree
+set commentary
+
+" Settings
+set clipboard+=unnamed
+set clipboard+=ideaput
+
+" Mappings
+let mapleader=" "
+
+nnoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <C-w> :action CloseEditor<CR>
+nmap <C-o> <Action>(Back)
+nmap <C-i> <Action>(Forward)
+
+nnoremap <leader>gd :action GotoDeclaration<CR>
+nnoremap <leader>gi :action GotoImplementation<CR>
+nnoremap <leader>gu :action GotoSuperMethod<CR>
+nnoremap <leader>gr :action FindUsages<CR>
+nnoremap <leader>ga :action GotoAction<CR>
+nnoremap <leader>gb :action ToggleBookmark<CR>
+nnoremap <leader>gl :action RecentLocations<CR>
+
+nnoremap <leader>m :action RecentFiles<CR>
+nnoremap <leader>f :action GotoFile<CR>
+nnoremap <leader>c :action GotoClass<CR>
+nnoremap <leader>s :action GotoSymbol<CR>
+nnoremap <leader>rr :action IdeaVim.ReloadVimRc.reload<CR>
+
+
