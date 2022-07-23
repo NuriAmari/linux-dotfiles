@@ -5,6 +5,7 @@
 ln -s -f $(pwd)/.gdbinit ~/.gdbinit
 ln -s -f $(pwd)/config ~/.i3/config
 ln -s -f $(pwd)/.vimrc ~/.i3/.vimrc
+ln -s -f $(pwd)/.neovintageousrc ~/.neovintageousrc
 mkdir -p ~/.config/nvim && ln -s -f $(pwd)/init.vim ~/.config/nvim/init.vim
 ln -s -f $(pwd)/.bashrc ~/.bashrc
 ln -s -f $(pwd)/.tmux.conf ~/.tmux.conf

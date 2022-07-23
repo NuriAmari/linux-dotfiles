@@ -4,10 +4,8 @@ set shell=/bin/bash
 set tabstop=4
 " when indenting with '>', use 4 spaces width
 set shiftwidth=4
-" change to 2 for js
+" change to 2 for cpp
 autocmd FileType cpp setlocal shiftwidth=2 tabstop=2
-" set wrap for markdown
-autocmd FileType md setlocal wrap
 " replace tabs with spaces
 set expandtab
 " relative line numbers
@@ -16,18 +14,22 @@ set relativenumber
 set number
 " no linewrap
 set nowrap
+" set wrap for markdown
+autocmd FileType md setlocal wrap
 " always display the status bar
 set laststatus=2
 " syntax highlight
 syntax enable
 " autoindenting
 set smartindent
-set noshowmode
+set autoindent
+
+" set noshowmode
 set mouse=a
 " highlight search terms
 set hlsearch
-" show results as you type
-set incsearch
+" don't move while searching (I lose context in big files)
+set noincsearch
 
 " persistent undo
 set undofile
@@ -40,8 +42,6 @@ if exists('*mkdir')
     endif
   endfor
 endif
-
-autocmd BufNewFile,BufRead * setlocal formatoptions-=r
 
 set clipboard=unnamedplus
 
@@ -74,6 +74,7 @@ nnoremap <leader>m :History<CR>
 nnoremap <leader>t :Tags<CR>
 nnoremap <leader>n :Marks<CR>
 nnoremap <leader>s :Rg<CR>
+nnoremap <leader>l :BLines<CR>
 
 " use to quick refresh vim
 noremap <leader>rr :source $MYVIMRC<CR>
@@ -117,9 +118,6 @@ Plug 'morhetz/gruvbox'
 " lightline colorscheme
 Plug 'shinchu/lightline-gruvbox.vim'
 
-" ale for white space fixing
-Plug 'dense-analysis/ale'
-
 " context
 Plug 'liuchengxu/vista.vim'
 
@@ -128,6 +126,13 @@ Plug 'SmiteshP/nvim-gps'
 
 " autocomplete
 Plug 'hrsh7th/nvim-compe'
+
+" lsp fzf integrations
+Plug 'gfanto/fzf-lsp.nvim'
+Plug 'nvim-lua/plenary.nvim'
+
+" " bookmarks
+" Plug 'MattesGroeger/vim-bookmarks'
 
 call plug#end()
 
@@ -149,18 +154,6 @@ let g:lightline = {
       \ },
       \ }
 
-nnoremap <silent> <leader>/ <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-
-" Ale configuration
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'cpp': ['clang-format'],
-\   'python': ['black'],
-\}
-
-let g:ale_fix_on_save = 0
-let g:ale_linters_explicit = 1
-
 " pick up .nvimrc if present
 set exrc
 set secure
@@ -173,12 +166,21 @@ nnoremap <silent> <leader>gd <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <leader><c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> <leader>gr    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> <leader>ga    <cmd>lua vim.lsp.buf.codeAction()<CR>
-nnoremap <silent> <leader>gt <cmd> lua vim.lsp.buf.typeDefinition()<CR>
+nnoremap <silent> <leader>ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> <leader>gt <cmd> lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> <leader>gi <cmd> lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <leader>gh <cmd> lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <leader>h :ClangdSwitchSourceHeader<CR>
 nnoremap <silent> <leader>rn <cmd> lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <leader>/ <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> <leader>d <cmd> lua vim.diagnostic.open_float()<CR>
+nnoremap <silent> <leader>n <cmd> lua vim.diagnostic.goto_next()<CR>
+nnoremap <silent> <leader>p <cmd> lua vim.diagnostic.goto_prev()<CR>
+
+" command! -nargs=? ws :WorkspaceSymbol <args>
+
+" Please do not consider the file name while grepping !
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1, fzf#vim#with_preview({"options": "--delimiter : --nth 4.."}), <bang>0)
 
 lua << EOF
 require'compe'.setup {
@@ -214,9 +216,17 @@ require'compe'.setup {
     luasnip = true;
   };
 }
-require'lspconfig'.clangd.setup{
-    root_dir = require'lspconfig'.util.root_pattern("compile_commands.json") or dirname
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "cpp"},
+  sync_install = false,
+  auto_install = true,
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = true,
+  },
 }
+require'lspconfig'.clangd.setup{}
+require'lspconfig'.cmake.setup{}
 require'nvim-gps'.setup()
 EOF
 
